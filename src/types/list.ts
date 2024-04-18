@@ -3,4 +3,5 @@ export interface Item {
   lastName: string;
   email: string;
   birthdate: number;
+  isNotSync?: boolean;
 }

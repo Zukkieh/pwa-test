@@ -2,6 +2,7 @@ import { Button, Container, Stack, TextField } from "@mui/material";
 import { useIsOnline } from "../../hooks/useIsOnline"
 import { clear, get, set, update } from "../../services/keyval";
 import { setItem, sync } from "../../services/firebase";
+import { Item } from "../../types/list";
 
 interface FormElements extends HTMLFormControlsCollection {
   firstName: HTMLInputElement;
@@ -24,6 +25,13 @@ const formatDate = (date: Date | null) => {
   return 0;
 }
 
+const formatItem = (item: Item) => ({
+  birthdate: item.birthdate,
+  email: item.email,
+  firstName: item.firstName,
+  lastName: item.lastName
+})
+
 const handleSubmit = async (e: React.FormEvent<RegisterFormElements>, isOnline: boolean) => {
   e.preventDefault();
   e.stopPropagation();
@@ -36,28 +44,31 @@ const handleSubmit = async (e: React.FormEvent<RegisterFormElements>, isOnline: 
     birthdate: formatDate(form.birthdate.valueAsDate)
   }
   try {
-    if(isOnline){
+    if (isOnline) {
       await setItem(item);
     }
-    else {
-      const items = await get("items");
-      await update("items", [...items, item]);
-    }
+    const items = await get("items");
+    await update("items", [...items, {
+      ...item,
+      isNotSync: true
+    }]);
   }
   catch {
-    set("items", [item]);
+    set("items", [{
+      ...item,
+      ...(!isOnline && {isNotSync: true})
+    }])
   }
 }
 
 const handleSync = async () => {
   try {
     const items = await get("items");
-    await sync(items);
+    sync(items.filter(item => item.isNotSync).map(formatItem)).then(async () => {
+      await update("items", items.map(formatItem));
+    });
   } catch (e) {
     console.error(e)
-  }
-  finally {
-    await clear();
   }
 }
 
@@ -111,7 +122,7 @@ const Register = () => {
             }}
           />
           <Button variant="contained" color="secondary" type="submit">Register</Button>
-          {isOnline  &&
+          {isOnline &&
             <Button
               variant="outlined"
               color="secondary"

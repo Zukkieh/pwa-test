@@ -5,9 +5,14 @@ import {
   del as keyvalDelete,
   clear as keyvalClear
 } from "idb-keyval";
+import { Item } from "../types/list";
 
 const keys = ["items"] as const;
-type Keys = typeof keys[number]
+type Keys = typeof keys[number];
+
+type Response = {
+  items: Item[],
+}
 
 const set = async <T>(key: Keys, value: T) => {
   try {
@@ -18,12 +23,13 @@ const set = async <T>(key: Keys, value: T) => {
   }
 }
 
-const get = async (key: Keys) => {
+const get = async <Key extends Keys>(key: Key): Promise<Response[Key]> => {
   try {
     const res = await keyvalGet(key);
     return res;
   } catch (e) {
     console.error(e)
+    throw new Error("Error on getting data");
   }
 }
 

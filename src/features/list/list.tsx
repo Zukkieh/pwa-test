@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useIsOnline } from "../../hooks/useIsOnline";
-import { get } from "../../services/keyval";
+import { get, update } from "../../services/keyval";
 import { Container } from "@mui/material";
 import { getItems as getFBItems } from "../../services/firebase";
 import { Item } from "../../types/list";
@@ -12,27 +12,42 @@ const List = () => {
 
   useEffect(() => {
     const getItems = async () => {
-      if(isOnline) {
-        const res = await getFBItems();
-        setList(res);
+      let fBItems: Item[] = [];
+      if (isOnline) {
+        fBItems = await getFBItems();
       }
-      else {
-        get('items')
-        .then(res => setList(res))
-        .catch(() => setList([]));
-      }
+      get('items')
+        .then(async (response) => {
+          if (response?.length) {
+            if (isOnline) {
+              const items = [
+                ...fBItems,
+                ...(response?.filter(item => item.isNotSync))
+              ]
+              setList(items);
+              await update("items", items);
+            }
+            else {
+              setList(response);
+            }
+          } else {
+            setList(fBItems)
+            if (isOnline)
+              await update("items", fBItems);
+          }
+        })
     }
     getItems();
   }, [isOnline])
 
   return (
     <Container sx={{
-        marginTop: "100px",
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '8px',
-      }}>
+      marginTop: "100px",
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '8px',
+    }}>
       {
         list?.length ? list?.map((item, index) => {
           return (
@@ -57,6 +72,7 @@ const List = () => {
                 <span>{"Name: " + item.firstName + " " + item.lastName}</span>
                 <span>{"Email: " + item.email}</span>
                 <span>{"Birthdate: " + Intl.DateTimeFormat("pt-BR").format(new Date(item.birthdate))}</span>
+                <span>{"Sync: " + (item?.isNotSync ? "No" : "Yes")}</span>
               </div>
             </div>
           )
