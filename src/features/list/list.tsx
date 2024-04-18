@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useIsOnline } from "../../hooks/useIsOnline";
 import { get, update } from "../../services/keyval";
-import { Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import { getItems as getFBItems } from "../../services/firebase";
 import { Item } from "../../types/list";
 
@@ -51,11 +51,12 @@ const List = () => {
       {
         list?.length ? list?.map((item, index) => {
           return (
-            <div
-              style={{
+            <Stack
+              direction="column"
+              sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                width: '500px',
+                width: '300px',
                 border: '1px solid black',
                 borderRadius: '4px',
               }}
@@ -74,7 +75,7 @@ const List = () => {
                 <span>{"Birthdate: " + Intl.DateTimeFormat("pt-BR").format(new Date(item.birthdate))}</span>
                 <span>{"Sync: " + (item?.isNotSync ? "No" : "Yes")}</span>
               </div>
-            </div>
+            </Stack>
           )
         }) : "Empty List"
       }

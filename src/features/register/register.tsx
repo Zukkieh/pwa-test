@@ -1,6 +1,6 @@
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { useIsOnline } from "../../hooks/useIsOnline"
-import { clear, get, set, update } from "../../services/keyval";
+import { get, set, update } from "../../services/keyval";
 import { setItem, sync } from "../../services/firebase";
 import { Item } from "../../types/list";
 
@@ -50,7 +50,7 @@ const handleSubmit = async (e: React.FormEvent<RegisterFormElements>, isOnline: 
     const items = await get("items");
     await update("items", [...items, {
       ...item,
-      isNotSync: true
+      ...(!isOnline && {isNotSync: true})
     }]);
   }
   catch {
