@@ -115,7 +115,6 @@ function Header() {
                   <MenuItem>
                     <Button
                       color="primary"
-                      variant="contained"
                       component="button"
                       sx={{ width: "100%" }}
                     >
@@ -125,7 +124,7 @@ function Header() {
                   <MenuItem>
                     <Button
                       color="primary"
-                      variant="outlined"
+                      variant="contained"
                       component="button"
                       sx={{ width: "100%" }}
                     >
@@ -135,7 +134,7 @@ function Header() {
                   <MenuItem>
                     <Button
                       color="primary"
-                      variant="outlined"
+                      variant="contained"
                       component="button"
                       sx={{ width: "100%" }}
                     >
