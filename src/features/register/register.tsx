@@ -1,5 +1,5 @@
 import { Button, Container, Stack, TextField } from "@mui/material";
-import { useIsOnline } from "../../hooks/useIsOnline"
+import { useIsOnline } from "../../hooks/useIsOnline";
 import { get, set, update } from "../../services/keyval";
 import { setItem, sync } from "../../services/firebase";
 import { Item } from "../../types/list";
@@ -12,7 +12,7 @@ interface FormElements extends HTMLFormControlsCollection {
 }
 
 interface RegisterFormElements extends HTMLFormElement {
-  readonly elements: FormElements
+  readonly elements: FormElements;
 }
 
 const formatDate = (date: Date | null) => {
@@ -23,16 +23,19 @@ const formatDate = (date: Date | null) => {
     return Date.UTC(year, month, day);
   }
   return 0;
-}
+};
 
 const formatItem = (item: Item) => ({
   birthdate: item.birthdate,
   email: item.email,
   firstName: item.firstName,
-  lastName: item.lastName
-})
+  lastName: item.lastName,
+});
 
-const handleSubmit = async (e: React.FormEvent<RegisterFormElements>, isOnline: boolean) => {
+const handleSubmit = async (
+  e: React.FormEvent<RegisterFormElements>,
+  isOnline: boolean,
+) => {
   e.preventDefault();
   e.stopPropagation();
   const form = e.currentTarget.elements;
@@ -41,48 +44,58 @@ const handleSubmit = async (e: React.FormEvent<RegisterFormElements>, isOnline: 
     firstName: form.firstName.value,
     lastName: form.lastName.value,
     email: form.email.value,
-    birthdate: formatDate(form.birthdate.valueAsDate)
-  }
+    birthdate: formatDate(form.birthdate.valueAsDate),
+  };
   try {
     if (isOnline) {
       await setItem(item);
     }
     const items = await get("items");
-    await update("items", [...items, {
-      ...item,
-      ...(!isOnline && {isNotSync: true})
-    }]);
+    await update("items", [
+      ...items,
+      {
+        ...item,
+        ...(!isOnline && { isNotSync: true }),
+      },
+    ]);
+  } catch {
+    set("items", [
+      {
+        ...item,
+        ...(!isOnline && { isNotSync: true }),
+      },
+    ]);
   }
-  catch {
-    set("items", [{
-      ...item,
-      ...(!isOnline && {isNotSync: true})
-    }])
-  }
-}
+};
 
 const handleSync = async () => {
   try {
     const items = await get("items");
-    sync(items.filter(item => item.isNotSync).map(formatItem)).then(async () => {
-      await update("items", items.map(formatItem));
-    });
+    sync(items.filter((item) => item.isNotSync).map(formatItem)).then(
+      async () => {
+        await update("items", items.map(formatItem));
+      },
+    );
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
-}
+};
 
 const Register = () => {
   const isOnline = useIsOnline();
   return (
     <Container sx={{ marginTop: "100px" }}>
       {
-        <form onSubmit={(e: React.FormEvent<RegisterFormElements>) => handleSubmit(e, isOnline)}>
+        <form
+          onSubmit={(e: React.FormEvent<RegisterFormElements>) =>
+            handleSubmit(e, isOnline)
+          }
+        >
           <Stack spacing={2} direction="row" sx={{ marginBottom: 4 }}>
             <TextField
               type="text"
-              variant='outlined'
-              color='secondary'
+              variant="outlined"
+              color="secondary"
               label="First Name"
               name="firstName"
               fullWidth
@@ -90,8 +103,8 @@ const Register = () => {
             />
             <TextField
               type="text"
-              variant='outlined'
-              color='secondary'
+              variant="outlined"
+              color="secondary"
               label="Last Name"
               name="lastName"
               fullWidth
@@ -100,8 +113,8 @@ const Register = () => {
           </Stack>
           <TextField
             type="email"
-            variant='outlined'
-            color='secondary'
+            variant="outlined"
+            color="secondary"
             label="Email"
             name="email"
             fullWidth
@@ -110,19 +123,21 @@ const Register = () => {
           />
           <TextField
             type="date"
-            variant='outlined'
-            color='secondary'
+            variant="outlined"
+            color="secondary"
             label="Date of Birth"
             name="birthdate"
             fullWidth
             required
             sx={{ mb: 4 }}
             InputLabelProps={{
-              shrink: true
+              shrink: true,
             }}
           />
-          <Button variant="contained" color="secondary" type="submit">Register</Button>
-          {isOnline &&
+          <Button variant="contained" color="secondary" type="submit">
+            Register
+          </Button>
+          {isOnline && (
             <Button
               variant="outlined"
               color="secondary"
@@ -131,11 +146,11 @@ const Register = () => {
             >
               SYNC
             </Button>
-          }
+          )}
         </form>
       }
-    </Container >
-  )
-}
+    </Container>
+  );
+};
 
 export default Register;

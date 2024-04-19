@@ -1,6 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { addDoc, collection, doc, getDocs, getFirestore, writeBatch } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  writeBatch,
+} from "firebase/firestore";
 import { Item } from "../types/list";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,26 +29,22 @@ const itemCol = collection(db, "items");
 
 const setItem = async (item: Item) => {
   await addDoc(itemCol, item);
-}
+};
 
 const sync = async (items: Item[]) => {
   const batch = writeBatch(db);
-  await items.map(async (item)=> {
+  await items.map(async (item) => {
     const collectionRef = await doc(itemCol);
     batch.set(collectionRef, item);
   });
 
   await batch.commit();
-}
+};
 
 const getItems = async () => {
   const itemsSnapshot = await getDocs(itemCol);
-  const itemsList = itemsSnapshot.docs.map(doc => doc.data() as Item);
+  const itemsList = itemsSnapshot.docs.map((doc) => doc.data() as Item);
   return itemsList;
-}
-
-export {
-  setItem,
-  getItems,
-  sync
 };
+
+export { setItem, getItems, sync };

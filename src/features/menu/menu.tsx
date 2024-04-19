@@ -1,28 +1,15 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link } from "react-router-dom";
 
-
-// const Header = () => {
-//   return (
-//     <>
-//       <Link to="/">Home</Link>
-//       <Link to="/register">Register</Link>
-//       <Link to="/list">List</Link>
-//       <Outlet />
-//     </>
-//   )
-// };
-// export default Header;
-
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
-import Drawer from '@mui/material/Drawer';
-import MenuIcon from '@mui/icons-material/Menu';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import MenuItem from "@mui/material/MenuItem";
+import Drawer from "@mui/material/Drawer";
+import MenuIcon from "@mui/icons-material/Menu";
 
 function Header() {
   const [open, setOpen] = React.useState(false);
@@ -37,8 +24,8 @@ function Header() {
         position="fixed"
         sx={{
           boxShadow: 0,
-          bgcolor: 'transparent',
-          backgroundImage: 'none',
+          bgcolor: "transparent",
+          backgroundImage: "none",
           mt: 2,
         }}
       >
@@ -46,30 +33,30 @@ function Header() {
           <Toolbar
             variant="regular"
             sx={(theme) => ({
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
               flexShrink: 0,
-              borderRadius: '999px',
+              borderRadius: "999px",
               bgcolor:
-                theme.palette.mode === 'light'
-                  ? 'rgba(255, 255, 255, 0.4)'
-                  : 'rgba(0, 0, 0, 0.4)',
-              backdropFilter: 'blur(24px)',
+                theme.palette.mode === "light"
+                  ? "rgba(255, 255, 255, 0.4)"
+                  : "rgba(0, 0, 0, 0.4)",
+              backdropFilter: "blur(24px)",
               maxHeight: 40,
-              border: '1px solid',
-              borderColor: 'divider',
+              border: "1px solid",
+              borderColor: "divider",
               boxShadow:
-                theme.palette.mode === 'light'
+                theme.palette.mode === "light"
                   ? `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
-                  : '0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)',
+                  : "0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)",
             })}
           >
             <Box
               sx={{
-                display: { xs: 'none', md: 'flex' },
+                display: { xs: "none", md: "flex" },
                 gap: 0.5,
-                alignItems: 'center',
+                alignItems: "center",
               }}
             >
               <Button
@@ -97,41 +84,40 @@ function Header() {
                 <Link to="/list">List</Link>
               </Button>
             </Box>
-            <Box sx={{ display: { sm: '', md: 'none' } }}>
+            <Box sx={{ display: { sm: "", md: "none" } }}>
               <Button
                 variant="text"
                 color="primary"
                 aria-label="menu"
                 onClick={toggleDrawer(true)}
-                sx={{ minWidth: '30px', p: '4px' }}
+                sx={{ minWidth: "30px", p: "4px" }}
               >
                 <MenuIcon />
               </Button>
               <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
                 <Box
                   sx={{
-                    minWidth: '60dvw',
+                    minWidth: "60dvw",
                     p: 2,
-                    backgroundColor: 'background.paper',
+                    backgroundColor: "background.paper",
                     flexGrow: 1,
                   }}
                 >
                   <Box
                     sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'end',
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "end",
                       flexGrow: 1,
                     }}
-                  >
-                  </Box>
+                  ></Box>
                   <Divider />
                   <MenuItem>
                     <Button
                       color="primary"
                       variant="contained"
                       component="button"
-                      sx={{ width: '100%' }}
+                      sx={{ width: "100%" }}
                     >
                       <Link to="/">Home</Link>
                     </Button>
@@ -141,7 +127,7 @@ function Header() {
                       color="primary"
                       variant="outlined"
                       component="button"
-                      sx={{ width: '100%' }}
+                      sx={{ width: "100%" }}
                     >
                       <Link to="/register">Register</Link>
                     </Button>
@@ -151,7 +137,7 @@ function Header() {
                       color="primary"
                       variant="outlined"
                       component="button"
-                      sx={{ width: '100%' }}
+                      sx={{ width: "100%" }}
                     >
                       <Link to="/list">List</Link>
                     </Button>

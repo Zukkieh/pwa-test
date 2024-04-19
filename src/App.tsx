@@ -1,7 +1,12 @@
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
-import { List } from './features/list';
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
+import { List } from "./features/list";
 import { Menu } from "./features/menu";
-import { Register } from './features/register';
+import { Register } from "./features/register";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -9,17 +14,12 @@ const router = createBrowserRouter(
       <Route index element={<></>} />
       <Route path="list" element={<List />} />
       <Route path="register" element={<Register />} />
-    </Route>
-  )
-)
+    </Route>,
+  ),
+);
 
-function App({ }) {
-
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+function App() {
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 export const useIsOnline = () => {
-  const [online, setOnline] = useState(typeof window !== "undefined" ? window.navigator.onLine : true);
+  const [online, setOnline] = useState(
+    typeof window !== "undefined" ? window.navigator.onLine : true,
+  );
 
   useEffect(() => {
     // create event handler
