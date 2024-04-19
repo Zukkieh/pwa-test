@@ -12,22 +12,28 @@ export default defineConfig({
         /* other options */
       },
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'My Awesome App',
-        short_name: 'MyApp',
-        description: 'My Awesome App description',
+        name: 'PWA Test',
+        short_name: 'PWA',
+        description: 'First PWA Test',
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'pwa-192x192.png', // <== don't add slash, for testing
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
-            src: 'pwa-512x512.png',
+            src: '/pwa-512x512.png', // <== don't remove slash, for testing
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png', // <== don't add slash, for testing
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
           }
         ]
       }
